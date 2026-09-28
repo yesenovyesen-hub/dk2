@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#101b3d">
+  <title>Merge Plane</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true">✈</div>
+        <div>
+          <p class="eyebrow">Sky hangar</p>
+          <h1>Merge Plane</h1>
+        </div>
+      </div>
+      <button id="reset-button" class="reset-button" type="button" aria-label="Сбросить прогресс" title="Сбросить прогресс">
+        <span aria-hidden="true">↺</span><small>Сброс</small>
+      </button>
+      <div class="level-badge" aria-label="Уровень игрока">
+        <span class="level-star">★</span>
+        <span><small>УРОВЕНЬ</small><strong id="player-level">1</strong></span>
+      </div>
+    </header>
+
+    <nav class="game-tabs" aria-label="Разделы игры">
+      <button class="game-tab is-active" type="button" data-screen="merge-screen" aria-selected="true">✈ <span>Merge Plane</span></button>
+      <button class="game-tab" type="button" data-screen="bonus-screen" aria-selected="false">✦ <span>Daily Bonus</span></button>
+      <button class="game-tab" type="button" data-screen="upgrader-screen" aria-selected="false">◆ <span>Апгрейдер</span></button>
+    </nav>
+
+    <section id="merge-screen" class="game-screen is-active" aria-label="Merge Plane">
+    <section class="balance-card" aria-label="Баланс">
+      <div class="balance-copy">
+        <span class="balance-label">ВАШ БАЛАНС</span>
+        <strong><span id="coin-balance">120</span><span class="coin">✦</span></strong>
+      </div>
+      <div class="balance-flight" aria-hidden="true">✈</div>
+      <div class="income-pill"><span class="pulse-dot"></span><span id="income-rate">0</span> / сек</div>
+    </section>
+
+    <section class="hangar-heading">
+      <div>
+        <p class="section-kicker">АНГАР 01</p>
+        <h2>Собери свой флот</h2>
+      </div>
+      <p class="hint"><span>↔</span> Перетащи на такой же</p>
+    </section>
+
+    <section class="board-wrap">
+      <div id="game-board" class="game-board" aria-label="Игровое поле для самолетов"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <span>✈</span>
+        <p>Купи самолет,<br>чтобы начать полет</p>
+      </div>
+    </section>
+
+    <section class="shop-panel">
+      <div class="shop-title">
+        <div class="shop-icon">✦</div>
+        <div><h2>Магазин</h2><p>Новый самолет в ангар</p></div>
+      </div>
+      <button id="buy-button" class="buy-button" type="button">
+        <span>КУПИТЬ</span><span class="buy-cost"><span id="buy-cost">40</span> ✦</span>
+      </button>
+    </section>
+
+    <footer class="status-line"><span class="online-dot"></span><span id="status-text">Все системы в норме</span><span class="footer-plane">✈</span></footer>
+    </section>
+
+    <section id="bonus-screen" class="game-screen bonus-screen" aria-label="Daily Bonus" hidden>
+      <div class="mini-game-heading">
+        <div class="future-icon">✦</div>
+        <div><p class="section-kicker">КАЖДЫЕ 24 ЧАСА</p><h2>Daily Bonus</h2></div>
+      </div>
+      <p class="mini-game-copy">Возвращайся каждый день, чтобы увеличивать награду.</p>
+      <div class="reward-track" aria-label="Серия наград">
+        <div class="reward-step"><strong>100</strong><span>день 1</span></div>
+        <div class="reward-step"><strong>250</strong><span>день 2</span></div>
+        <div class="reward-step"><strong>500</strong><span>день 3+</span></div>
+      </div>
+      <div class="bonus-action">
+        <span id="bonus-status">Бонус готов</span>
+        <strong id="bonus-timer">00:00:00</strong>
+        <button id="claim-bonus-button" class="buy-button" type="button">ЗАБРАТЬ <span id="bonus-reward">100 ✦</span></button>
+      </div>
+    </section>
+
+    <section id="upgrader-screen" class="game-screen upgrader-screen" aria-label="Апгрейдер" hidden>
+      <div class="mini-game-heading">
+        <div class="future-icon upgrader-icon">◆</div>
+        <div><p class="section-kicker">РИСК И НАГРАДА</p><h2>Апгрейдер</h2></div>
+      </div>
+      <section id="risk-upgrader-panel" class="risk-upgrader-panel" aria-label="Апгрейдер самолета">
+        <div class="risk-upgrader-heading">
+          <div class="shop-icon risk-icon">✈</div>
+          <div><h2>Уровень самолета</h2><p>Перетащи самолет из ангара в слот</p></div>
+        </div>
+        <div id="upgrader-plane-list" class="upgrader-plane-list" aria-label="Самолеты ангара"></div>
+        <div class="risk-upgrader-slot" tabindex="0" aria-label="Слот апгрейдера"><span class="risk-slot-placeholder">✦<small>СЛОТ</small></span></div>
+        <div class="risk-controls">
+          <div class="risk-multipliers" role="group" aria-label="Множитель уровня">
+            <button class="risk-multiplier-button is-selected" type="button" data-multiplier="2" aria-pressed="true">x2 <small>50%</small></button>
+            <button class="risk-multiplier-button" type="button" data-multiplier="3" aria-pressed="false">x3 <small>30%</small></button>
+            <button class="risk-multiplier-button" type="button" data-multiplier="4" aria-pressed="false">x4 <small>15%</small></button>
+          </div>
+          <button class="buy-button risk-gamble-button" type="button">АПГРЕЙД <span class="risk-gamble-label">x2</span></button>
+        </div>
+        <p class="risk-upgrader-status" aria-live="polite">Выбери самолет</p>
+        <div class="risk-result" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>
